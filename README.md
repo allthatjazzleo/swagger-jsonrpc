@@ -4,7 +4,7 @@ This is a simple Ethereum type JSON-RPC methods swagger. This app bootstrapped w
 
 ## Get Started
 
-1. `$git clone https://github.com/kether-c/jsonrpc && cd jsonrpc`
+1. `$git clone https://github.com/kether-c/swagger-jsonrpc.git && cd swagger-jsonrpc`
 2. `$go get swagger-jsonrpc-v1`
 3. `$go run main.go`
 4. `$open http://localhost:8011/docs`

@@ -661,18 +661,18 @@ func main() {
 
 	r.Mount("/rpc", h)
 
-	// Swagger UI endpoint at /docs.
-	r.Method(http.MethodGet, "/docs/jsonrpc.json", h.OpenAPI)
+	// Swagger UI endpoint at /docs/swagger.
+	r.Method(http.MethodGet, "/docs/swagger/jsonrpc.json", h.OpenAPI)
 
-	r.Mount("/docs", v3cdn.NewHandlerWithConfig(swgui.Config{
+	r.Mount("/docs/swagger", v3cdn.NewHandlerWithConfig(swgui.Config{
 		Title:       apiSchema.Reflector().SpecEns().Info.Title,
-		SwaggerJSON: "/docs/jsonrpc.json",
-		BasePath:    "/docs",
+		SwaggerJSON: "/docs/swagger/jsonrpc.json",
+		BasePath:    "/docs/swagger",
 		SettingsUI:  SwguiSettings(nil),
 	}))
 
 	// Start server.
-	log.Println("http://localhost:8011/docs")
+	log.Println("http://localhost:8011/docs/swagger")
 
 	if err := http.ListenAndServe(":8011", r); err != nil {
 		log.Fatal(err)

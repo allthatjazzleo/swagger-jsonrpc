@@ -16,7 +16,7 @@ func main() {
 	apiSchema := jsonrpc.OpenAPI{}
 	apiSchema.Reflector().SpecEns().Info.Title = "Simple Ethereum type JSON-RPC Methods"
 	apiSchema.Reflector().SpecEns().Info.Version = "v0.0.1"
-	apiSchema.Reflector().SpecEns().Info.WithDescription("This app showcases a Ethereum type JSON-RPC API connecting to Cronos testnet node.")
+	apiSchema.Reflector().SpecEns().Info.WithDescription("This app showcases a Ethereum type JSON-RPC API connecting to Cronos testnet node. Some methods require params, a sample request body is presented in each method correspondingly. You can copy and paste those sample requests for simplicity.")
 
 	h := &jsonrpc.Handler{}
 	h.OpenAPI = &apiSchema
@@ -200,27 +200,6 @@ func main() {
 	eth_sign.SetTitle(`The sign method calculates an Ethereum specific signature with: sign(keccak256("\x19Ethereum Signed Message:\n" + len(message) + message))).`)
 	eth_sign.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"eth_sign","params":["0x9b2055d370f73ec7d8a03e965129118dc8f5bf83", "0xdeadbeaf"],"id":1}`)
 
-	// eth_signTransaction
-	eth_signTransaction := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	eth_signTransaction.SetName("eth_signTransaction")
-	eth_signTransaction.SetTags("ETH Methods")
-	eth_signTransaction.SetTitle("Signs a transaction that can be submitted to the network at a later time using with eth_sendRawTransaction.")
-	eth_signTransaction.SetDescription(`Request body sample: {
-		"id": 1,
-		"jsonrpc": "2.0",
-		"method": "eth_signTransaction",
-		"params": [{
-			"data": "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675",
-			"from": "0xb60e8dd61c5d32be8058bb8eb970870f07233155",
-			"gas": "0x76c0",
-			"gasPrice": "0x9184e72a000",
-			"to": "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
-			"value": "0x9184e72a"
-		}]
-	}`)
-
 	// eth_sendTransaction
 	eth_sendTransaction := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
 		return nil
@@ -228,19 +207,7 @@ func main() {
 	eth_sendTransaction.SetName("eth_sendTransaction")
 	eth_sendTransaction.SetTags("ETH Methods")
 	eth_sendTransaction.SetTitle("Creates new message call transaction or a contract creation, if the data field contains code.")
-	eth_sendTransaction.SetDescription(`Request body sample: {
-		"id": 1,
-		"jsonrpc": "2.0",
-		"method": "eth_sendTransaction",
-		"params": [{
-			"from": "0xb60e8dd61c5d32be8058bb8eb970870f07233155",
-			"to": "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
-			"gas": "0x76c0", // 30400
-			"gasPrice": "0x9184e72a000", // 10000000000000
-			"value": "0x9184e72a", // 2441406250
-			"data": "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675"
-		}]
-	}`)
+	eth_sendTransaction.SetDescription(`Request body sample: { "id": 1, "jsonrpc": "2.0", "method": "eth_sendTransaction", "params": [{ "from": "0xb60e8dd61c5d32be8058bb8eb970870f07233155", "data": "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675" }] }`)
 
 	// eth_sendRawTransaction
 	eth_sendRawTransaction := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
@@ -323,41 +290,6 @@ func main() {
 	eth_getUncleByBlockNumberAndIndex.SetTitle("Returns information about a uncle of a block by number and uncle index position.")
 	eth_getUncleByBlockNumberAndIndex.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"eth_getUncleByBlockNumberAndIndex","params":["0x29c", "0x0"],"id":1}`)
 
-	// eth_getCompilers
-	eth_getCompilers := usecase.NewIOI(new(empty), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	eth_getCompilers.SetName("eth_getCompilers")
-	eth_getCompilers.SetTags("ETH Methods")
-	eth_getCompilers.SetTitle("Returns a list of available compilers in the client.")
-
-	// eth_compileSolidity
-	eth_compileSolidity := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	eth_compileSolidity.SetName("eth_compileSolidity")
-	eth_compileSolidity.SetTags("ETH Methods")
-	eth_compileSolidity.SetTitle("Returns compiled solidity code.")
-	eth_compileSolidity.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"eth_compileSolidity","params":["contract test { function multiply(uint a) returns(uint d) {   return a * 7;   } }"],"id":1}`)
-
-	// eth_compileLLL
-	eth_compileLLL := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	eth_compileLLL.SetName("eth_compileLLL")
-	eth_compileLLL.SetTags("ETH Methods")
-	eth_compileLLL.SetTitle("Returns compiled LLL code.")
-	eth_compileLLL.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"eth_compileLLL","params":["(returnlll (suicide (caller)))"],"id":1}`)
-
-	// eth_compileSerpent
-	eth_compileSerpent := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	eth_compileSerpent.SetName("eth_compileSerpent")
-	eth_compileSerpent.SetTags("ETH Methods")
-	eth_compileSerpent.SetTitle("Returns compiled serpent code.")
-	eth_compileSerpent.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"eth_compileSerpent","params":["/* some serpent */"],"id":1}`)
-
 	// eth_newFilter
 	eth_newFilter := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
 		return nil
@@ -424,32 +356,6 @@ func main() {
 	eth_getLogs.SetTitle("Returns an array of all logs matching a given filter object.")
 	eth_getLogs.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"eth_getLogs","params":[{"topics":["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]}],"id":74}`)
 
-	// eth_getWork
-	eth_getWork := usecase.NewIOI(new(empty), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	eth_getWork.SetName("eth_getWork")
-	eth_getWork.SetTags("ETH Methods")
-	eth_getWork.SetTitle("Returns the hash of the current block, the seedHash, and the boundary condition to be met (“target”).")
-
-	// eth_submitWork
-	eth_submitWork := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	eth_submitWork.SetName("eth_submitWork")
-	eth_submitWork.SetTags("ETH Methods")
-	eth_submitWork.SetTitle("Used for submitting a proof-of-work solution.")
-	eth_submitWork.SetDescription(`Request body sample: {"jsonrpc":"2.0", "method":"eth_submitWork", "params":["0x0000000000000001", "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef", "0xD1GE5700000000000000000000000000D1GE5700000000000000000000000000"],"id":73}`)
-
-	// eth_submitHashrate
-	eth_submitHashrate := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	eth_submitHashrate.SetName("eth_submitHashrate")
-	eth_submitHashrate.SetTags("ETH Methods")
-	eth_submitHashrate.SetTitle("Used for submitting mining hashrate.")
-	eth_submitHashrate.SetDescription(`Request body sample: {"jsonrpc":"2.0", "method":"eth_submitHashrate", "params":["0x0000000000000000000000000000000000000000000000000000000000500000", "0x59daa26581d0acd1fce254fb7e85952f4c09d0915afd33d3886cd914bc7d283c"],"id":73}`)
-
 	// eth_call
 	eth_call := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
 		return nil
@@ -458,13 +364,8 @@ func main() {
 	eth_call.SetTags("ETH Methods")
 	eth_call.SetTitle("Executes a new message call immediately without creating a transaction on the block chain.")
 	eth_call.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"eth_call","params":[{
-		"data": "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675",
-		"from": "0xb60e8dd61c5d32be8058bb8eb970870f07233155",
-		"gas": "0x76c0",
-		"gasPrice": "0x9184e72a000",
-		"to": "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
-		"value": "0x9184e72a"
-	}],"id":1}`)
+		"to": "0xd46e8dd67c5d32be8058bb8eb970870f07244567"
+	}, "latest"],"id":1}`)
 
 	// eth_estimateGas
 	eth_estimateGas := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
@@ -474,129 +375,8 @@ func main() {
 	eth_estimateGas.SetTags("ETH Methods")
 	eth_estimateGas.SetTitle("Generates and returns an estimate of how much gas is necessary to allow the transaction to complete. The transaction will not be added to the blockchain. Note that the estimate may be significantly more than the amount of gas actually used by the transaction, for a variety of reasons including EVM mechanics and node performance.")
 	eth_estimateGas.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"eth_estimateGas","params":[{
-		"data": "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675",
-		"from": "0xb60e8dd61c5d32be8058bb8eb970870f07233155",
-		"gas": "0x76c0",
-		"gasPrice": "0x9184e72a000",
-		"to": "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
-		"value": "0x9184e72a"
-	}],"id":1}`)
-
-	// db_putString
-	db_putString := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	db_putString.SetName("db_putString")
-	db_putString.SetTags("DB Methods")
-	db_putString.SetTitle("Stores a string in the local database.")
-	db_putString.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"db_putString","params":["testDB","myKey","myString"],"id":73}`)
-
-	// db_getString
-	db_getString := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	db_getString.SetName("db_getString")
-	db_getString.SetTags("DB Methods")
-	db_getString.SetTitle("Returns string from the local database.")
-	db_getString.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"db_getString","params":["testDB","myKey"],"id":73}`)
-
-	// db_putHex
-	db_putHex := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	db_putHex.SetName("db_putHex")
-	db_putHex.SetTags("DB Methods")
-	db_putHex.SetTitle("Stores binary data in the local database.")
-	db_putHex.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"db_putHex","params":["testDB","myKey","0x68656c6c6f20776f726c64"],"id":73}`)
-
-	// db_putHex
-	db_getHex := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	db_getHex.SetName("db_getHex")
-	db_getHex.SetTags("DB Methods")
-	db_getHex.SetTitle("Returns binary data from the local database.")
-	db_getHex.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"db_getHex","params":["testDB","myKey"],"id":73}`)
-
-	// shh_version
-	shh_version := usecase.NewIOI(new(empty), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	shh_version.SetName("shh_version")
-	shh_version.SetTags("SHH Methods")
-	shh_version.SetTitle("Returns the current whisper protocol version.")
-
-	// shh_post
-	shh_post := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	shh_post.SetName("shh_post")
-	shh_post.SetTags("SHH Methods")
-	shh_post.SetTitle("Sends a whisper message.")
-	shh_post.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"shh_post","params":[{
-		from: "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1",
-		to: "0x3e245533f97284d442460f2998cd41858798ddf04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a0d4d661997d3940272b717b1",
-		topics: ["0x776869737065722d636861742d636c69656e74", "0x4d5a695276454c39425154466b61693532"],
-		payload: "0x7b2274797065223a226d6",
-		priority: "0x64",
-		ttl: "0x64",
-	  }],"id":73}'`)
-
-	// shh_newIdentity
-	shh_newIdentity := usecase.NewIOI(new(empty), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	shh_newIdentity.SetName("shh_newIdentity")
-	shh_newIdentity.SetTags("SHH Methods")
-	shh_newIdentity.SetTitle("Creates new whisper identity in the client.")
-
-	// shh_hasIdentity
-	shh_hasIdentity := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	shh_hasIdentity.SetName("shh_hasIdentity")
-	shh_hasIdentity.SetTags("SHH Methods")
-	shh_hasIdentity.SetTitle("Checks if the client hold the private keys for a given identity.")
-	shh_hasIdentity.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"shh_hasIdentity","params":["0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"],"id":73}`)
-
-	// shh_newFilter
-	shh_newFilter := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	shh_newFilter.SetName("shh_newFilter")
-	shh_newFilter.SetTags("SHH Methods")
-	shh_newFilter.SetTitle("Creates filter to notify, when client receives whisper message matching the filter options.")
-	shh_newFilter.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"shh_newFilter","params":[{
-		"topics": ['0x12341234bf4b564f'],
-		"to": "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
-	 }],"id":73}'`)
-
-	// shh_uninstallFilter
-	shh_uninstallFilter := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	shh_uninstallFilter.SetName("shh_uninstallFilter")
-	shh_uninstallFilter.SetTags("SHH Methods")
-	shh_uninstallFilter.SetTitle("Uninstalls a filter with given id. Should always be called when watch is no longer needed.")
-	shh_uninstallFilter.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"shh_uninstallFilter","params":["0x7"],"id":73}`)
-
-	// shh_getFilterChanges
-	shh_getFilterChanges := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	shh_getFilterChanges.SetName("shh_getFilterChanges")
-	shh_getFilterChanges.SetTags("SHH Methods")
-	shh_getFilterChanges.SetTitle("Polling method for whisper filters. Returns new messages since the last call of this method.")
-	shh_getFilterChanges.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"shh_getFilterChanges","params":["0x7"],"id":73}`)
-
-	// shh_getMessages
-	shh_getMessages := usecase.NewIOI(new(Input), new(Output), func(ctx context.Context, input, output interface{}) error {
-		return nil
-	})
-	shh_getMessages.SetName("shh_getMessages")
-	shh_getMessages.SetTags("SHH Methods")
-	shh_getMessages.SetTitle("Get all messages matching a filter. Unlike shh_getFilterChanges this returns all messages.")
-	shh_getMessages.SetDescription(`Request body sample: {"jsonrpc":"2.0","method":"shh_getMessages","params":["0x7"],"id":73}`)
+		"to": "0xd46e8dd67c5d32be8058bb8eb970870f07244567"
+	}, "latest"],"id":1}`)
 
 	h.Add(web3_clientVersion)
 	h.Add(web3_sha3)
@@ -617,7 +397,6 @@ func main() {
 	h.Add(eth_getUncleCountByBlockNumber)
 	h.Add(eth_getCode)
 	h.Add(eth_sign)
-	h.Add(eth_signTransaction)
 	h.Add(eth_sendTransaction)
 	h.Add(eth_sendRawTransaction)
 	h.Add(eth_getBlockByHash)
@@ -628,10 +407,6 @@ func main() {
 	h.Add(eth_getTransactionReceipt)
 	h.Add(eth_getUncleByBlockHashAndIndex)
 	h.Add(eth_getUncleByBlockNumberAndIndex)
-	h.Add(eth_getCompilers)
-	h.Add(eth_compileSolidity)
-	h.Add(eth_compileLLL)
-	h.Add(eth_compileSerpent)
 	h.Add(eth_newFilter)
 	h.Add(eth_newBlockFilter)
 	h.Add(eth_newPendingTransactionFilter)
@@ -639,23 +414,8 @@ func main() {
 	h.Add(eth_getFilterChanges)
 	h.Add(eth_getFilterLogs)
 	h.Add(eth_getLogs)
-	h.Add(eth_getWork)
-	h.Add(eth_submitWork)
-	h.Add(eth_submitHashrate)
 	h.Add(eth_call)
 	h.Add(eth_estimateGas)
-	h.Add(db_putString)
-	h.Add(db_getString)
-	h.Add(db_putHex)
-	h.Add(db_putHex)
-	h.Add(shh_version)
-	h.Add(shh_post)
-	h.Add(shh_newIdentity)
-	h.Add(shh_hasIdentity)
-	h.Add(shh_newFilter)
-	h.Add(shh_uninstallFilter)
-	h.Add(shh_getFilterChanges)
-	h.Add(shh_getMessages)
 
 	r := chi.NewRouter()
 
@@ -672,9 +432,9 @@ func main() {
 	}))
 
 	// Start server.
-	log.Println("http://localhost:8011/docs/swagger")
+	log.Println("http://localhost:443/docs/swagger")
 
-	if err := http.ListenAndServe(":8011", r); err != nil {
+	if err := http.ListenAndServe(":443", r); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -688,13 +448,18 @@ func SwguiSettings(settingsUI map[string]string) map[string]string {
 				if (request.loadSpec) {
 					return request;
 				}
+				var networkUrl = "https://cronos-testnet-3.crypto.org:8545/";
 				var url = window.location.protocol + '//'+ window.location.host;
 				var method = request.url.substring(url.length);
 				var params = '{"jsonrpc": "2.0", "method": "' + method + '", "id": 1, "params": []}';
 				if (request.body) {
 					params = request.body;
 				}
-				request.url = "https://cronos-testnet-3.crypto.org:8545/";
+				if (window.location.search.split('=')[1] === 'mainnet') {
+					networkUrl = "https://evm-cronos.crypto.org/";
+				}
+
+				request.url = networkUrl;
 				request.headers = {"Content-Type": "application/json"}
 				request.body = params;
 				return request;
